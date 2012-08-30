@@ -1,0 +1,6 @@
+# A simple dada-engine-like engine
+
+Written in Ruby.
+
+Probably doesn't support the full dada set of operations, and
+certainly doesn't support proper dada syntax.

@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+require File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib', 'dada')))
+grammar = Dada::Grammar.new ARGF.read
+puts grammar.generate
