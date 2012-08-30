@@ -40,17 +40,36 @@ module Dada
         char = get_char
         if char == "\n"
           break
-        elsif char == '"'
-          rhs << read_string!
         elsif char == '|'
           # add a term, nop
         else
           unget_char
-          rhs << read_atom!
+          rhs << read_phrase!
         end
         consume_whitespace!(:no_newline => true)
       end
+      STDERR.puts "Got RHS: #{rhs.inspect}" if ENV['DEBUG_PARSER']
       rhs
+    end
+
+    def read_phrase!
+      phrase = Phrase.new
+      while true do
+        break unless input_left_to_consume?
+        char = get_char
+        if char == '"'
+          phrase << read_string!
+        elsif char == '|' || char == "\n"
+          unget_char
+          break
+        else
+          unget_char
+          phrase << read_atom!
+        end
+        consume_whitespace!(:no_newline => true)
+      end
+      STDERR.puts "Got phrase: #{phrase.inspect}" if ENV['DEBUG_PARSER']
+      phrase
     end
 
     def read_atom!
@@ -77,7 +96,7 @@ module Dada
           val << char
         end
       end
-        STDERR.puts "String is #{val.inspect}." if ENV['DEBUG_PARSER']
+      STDERR.puts "String is #{val.inspect}." if ENV['DEBUG_PARSER']
       val.join('')
     end
 
@@ -106,13 +125,15 @@ module Dada
     def get_char
       raise SyntaxError.new("Unexpected EOF") if !input_left_to_consume?
       @char = @input.getc
-      puts "Read: #{@char.inspect}" if ENV['DEBUG_PARSER']
+      STDERR.puts "Read: #{@char.inspect}" if ENV['DEBUG_PARSER']
+      # STDERR.puts caller.join("\n") if ENV['DEBUG_PARSER'] && @char == '='
+      # STDERR.puts caller.join("\n") if ENV['DEBUG_PARSER'] && @char == "\n"
       @char
     end
 
     def unget_char
       @input.ungetc(@char)
-      puts "Unread: #{@char.inspect}" if ENV['DEBUG_PARSER']
+      STDERR.puts "Unread: #{@char.inspect}" if ENV['DEBUG_PARSER']
       nil
     end
   end
