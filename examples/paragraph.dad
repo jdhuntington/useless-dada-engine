@@ -1,0 +1,8 @@
+main                 = p1
+p1                   = "I am " p1_sentence_end "."
+p1_sentence_end      = gerund " " prepositional_phrase
+gerund               = verb "ing"
+verb                 = "learn" | "speak" | "walk" | "talk"
+prepositional_phrase = preposition " the " noun
+noun                 = "forest" | "garden" | "office" | "room"
+preposition          = "in" | "on"
