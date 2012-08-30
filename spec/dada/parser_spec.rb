@@ -6,4 +6,17 @@ describe Dada::Parser do
     p = Dada::Parser.new(contents)
     p.atoms.should == { :main => ["Hello, world!"] }
   end
+
+  it 'should parse out a 5 rule example' do
+    contents = fixture('5-rules')
+    p = Dada::Parser.new(contents)
+    expected = {
+      :word1 => ['foo'],
+      :word2 => ['bar'],
+      :term1 => [:word1],
+      :term2 => [:word2],
+      :main => [:term1, :term2, :word2],
+    }
+    p.atoms.should == expected
+  end
 end

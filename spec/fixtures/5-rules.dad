@@ -1,0 +1,10 @@
+word1 = "foo"
+word2="bar"
+term1=  word1
+term2   =word2
+
+
+
+
+
+main = term1 | term2 | word2
